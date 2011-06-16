@@ -5,13 +5,13 @@
 
 Gem::Specification.new do |s|
   s.name = %q{dawanda-statsd-client}
-  s.version = "0.1.0"
+  s.version = "0.1.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Tom Taylor"]
-  s.date = %q{2011-02-23}
+  s.date = %q{2011-06-16}
   s.default_executable = %q{statsd-send}
-  s.description = %q{TODO: longer description of your gem}
+  s.description = %q{A Ruby client for statsd}
   s.email = %q{tom@tomtaylor.co.uk}
   s.executables = ["statsd-send"]
   s.extra_rdoc_files = [
@@ -28,7 +28,8 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "bin/statsd-send",
-    "lib/statsd-client.rb",
+    "dawanda-statsd-client.gemspec",
+    "lib/statsd/client.rb",
     "spec/spec_helper.rb",
     "spec/statsd-client_spec.rb",
     "statsd-client.example.yml"
@@ -36,7 +37,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/dawanda/statsd-client}
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.7}
+  s.rubygems_version = %q{1.6.2}
   s.summary = %q{Client for statds}
   s.test_files = [
     "spec/spec_helper.rb",
@@ -44,7 +45,6 @@ Gem::Specification.new do |s|
   ]
 
   if s.respond_to? :specification_version then
-    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
