@@ -35,7 +35,7 @@ class Statsd
     
     def client
       return Statsd::DummyClient if deactivated?
-      @client ||= Statsd::Client.new(host, port)
+      @client ||= Statsd::Client.new(host, port, tcp?)
     end
   
     def config
@@ -53,6 +53,10 @@ class Statsd
   
     def port
       config['port'] || 8125
+    end
+
+    def tcp?
+      config['tcp']
     end
   
     # statds reports with default configs 1/10 of actual value
@@ -76,14 +80,15 @@ class Statsd
   
   class Client
     VERSION = File.read( File.join(File.dirname(__FILE__),'..', '..', 'VERSION') ).strip
-    attr_reader :host, :port
+    attr_reader :host, :port, :tcp
 
     # Initializes a Statsd client.
     #
     # @param [String] host
     # @param [Integer] port
-    def initialize(host = 'localhost', port = 8125)
-      @host, @port = host, port
+    # @param [Boolean] tcp
+    def initialize(host = 'localhost', port = 8125, tcp = false)
+      @host, @port, @tcp = host, port, tcp
     end
 
     # Sends timing statistics.
@@ -148,12 +153,20 @@ class Statsd
         sampled_data = data
       end
 
-      socket = UDPSocket.new
-
+      if self.tcp
+        socket = TCPSocket.new( self.host, self.port)
+      else
+        socket = UDPSocket.new
+      end
+      
       begin
         sampled_data.each do |k,v|
           message = [k,v].join(':')
-          socket.send(message, 0, self.host, self.port)
+          if self.tcp
+            socket.send(message, 0)
+          else
+            socket.send(message, 0, self.host, self.port)            
+          end
         end
       rescue Exception => e
         puts "Unexpected error: #{e}"
