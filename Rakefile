@@ -12,11 +12,11 @@ require 'rake'
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-  gem.name = "statsd-client"
-  gem.homepage = "http://github.com/tomtaylor/statsd-client"
+  gem.name = "dawanda-statsd-client"
+  gem.homepage = "http://github.com/dawanda/statsd-client"
   gem.license = "MIT"
   gem.summary = "Client for statds"
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.description = %Q{A Ruby client for statsd}
   gem.email = "tom@tomtaylor.co.uk"
   gem.authors = ["Tom Taylor"]
 end
