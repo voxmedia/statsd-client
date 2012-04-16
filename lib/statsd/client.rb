@@ -123,7 +123,7 @@ class Statsd
     # @param [Integer, Float] delta
     # @param [Integer, Float] sample_rate
     def update_stats(stats, delta = 1, sample_rate = 1)
-      stats = [prefix(stats)] unless stats.kind_of?(Array)
+      stats = [stats] unless stats.kind_of?(Array)
 
       data = {}
 
