@@ -87,8 +87,8 @@ class Statsd
     # @param [String] host
     # @param [Integer] port
     # @param [Boolean] tcp
-    def initialize(host = 'localhost', port = 8125, tcp = false)
-      @host, @port, @tcp = host, port, tcp
+    def initialize(host = 'localhost', port = 8125, tcp = false,namespace='')
+      @host, @port, @tcp,@namespace = host, port, tcp, namespace
     end
 
     # Sends timing statistics.
@@ -123,7 +123,7 @@ class Statsd
     # @param [Integer, Float] delta
     # @param [Integer, Float] sample_rate
     def update_stats(stats, delta = 1, sample_rate = 1)
-      stats = [stats] unless stats.kind_of?(Array)
+      stats = [prefix(stats)] unless stats.kind_of?(Array)
 
       data = {}
 
@@ -131,13 +131,17 @@ class Statsd
       stats.each do |stat|
         # if it's got a |ms in it, we know it's a timing stat, so don't append
         # the |c.
-        data[stat] = delta.include?('|ms') ? delta : "#{delta}|c"
+        data[prefix(stat)] = delta.include?('|ms') ? delta : "#{delta}|c"
       end
 
       send(data, sample_rate)
     end
 
     private
+
+    def prefix(stats) 
+      "#{@namespace}.#{stats}"
+    end
 
     def send(data, sample_rate = 1)
       #puts "sending #{data} with sample #{sample_rate}"
