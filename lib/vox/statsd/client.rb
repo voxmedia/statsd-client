@@ -29,15 +29,15 @@ module Vox
       end
       alias_method :dec, :decrement
 
-      def timing(metric, value = nil)
+      def timing(metric, value = nil, sample_rate = 1)
         if block_given? && value.nil?
           start_time = Time.now
           returning = yield
           diff = 1000 * (Time.now - start_time)
-          client.timing(metric,diff)
+          client.timing(metric, diff, sample_rate)
           returning
         else
-          client.timing(metric, value)
+          client.timing(metric, value, sample_rate)
         end
       end
       alias_method :time, :timing
